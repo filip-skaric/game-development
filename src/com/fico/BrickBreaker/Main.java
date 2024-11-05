@@ -10,8 +10,9 @@ public class Main {
 		GamePlay gamePlay = new GamePlay();
 		obj.setBounds(10, 10, 700, 600); //this are dimension of the app
 		obj.setTitle("Brick Breaker"); //title
-		obj.setResizable(false); //not resizable
+		obj.setResizable(true); //not resizable
 		obj.setVisible(true); 
 		obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //when press close in app
+		obj.add(gamePlay);
 	}
 }
