@@ -2,6 +2,7 @@ package com.fico.BrickBreaker;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +28,11 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 	private int ballXDir = -1;
 	private int ballYDir = -2;
 	
+	private MapGenerator map;
+	
 	public GamePlay() {
+		
+		map = new MapGenerator(3, 7); //3 columns and 7 rows
 		
 		// Adds a key listener to the current object, allowing it to respond to key events
 		addKeyListener(this);
@@ -50,6 +55,8 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 		
 		g.setColor(Color.white);
 		g.fillRect(1, 1, 692, 592);
+		
+		map.draw((Graphics2D)g);
 		
 		//border around app :)
 		g.setColor(Color.yellow);
@@ -76,7 +83,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 		if (play) {
 			
 			//ball redirection by the pedal
-			if (new Rectangle(ballPosX, ballPosY, 20, 30).intersects(new Rectangle(playerX, 550, 100, 8))) {
+			if (new Rectangle(ballPosX, ballPosY, 20, 23).intersects(new Rectangle(playerX, 550, 100, 8))) {
 			
 				ballYDir = -ballYDir;
 			}
@@ -111,8 +118,8 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 	public void keyPressed(KeyEvent e) {
 		
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (playerX >= 600) {
-				playerX = 600;
+			if (playerX >= 580) {
+				playerX = 570;
 			} else {
 				moveRight();
 			}
