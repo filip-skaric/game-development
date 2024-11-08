@@ -25,8 +25,8 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 	private int playerX = 310;
 	private int ballPosX = 120;
 	private int ballPosY = 350;
-	private int ballXDir = -1;
-	private int ballYDir = -2;
+	private int ballXDir = -2;
+	private int ballYDir = -4;
 	
 	private MapGenerator map;
 	
@@ -86,6 +86,34 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 			if (new Rectangle(ballPosX, ballPosY, 20, 23).intersects(new Rectangle(playerX, 550, 100, 8))) {
 			
 				ballYDir = -ballYDir;
+			}
+			
+			for (int i = 0; i < map.map.length; i++) {
+				for (int j = 0; j < map.map[0].length; j++) {
+					
+
+					if (map.map[i][j] > 0) {
+						
+						int brickX = j * map.brickWidth + 80;
+						int brickY = i * map.brickHeight + 50;
+						
+						Rectangle bricRect = new Rectangle(brickX, brickY, map.brickWidth, map.brickHeight);
+						
+						if (new Rectangle(ballPosX, ballPosY, 20, 23).intersects(bricRect)) {
+							
+							map.setBrickValue(0, i, j);
+							totalBrick--;
+							score += 5;
+							
+							if ( (ballPosX + 19 >= bricRect.x) || (ballPosX + 1 >= bricRect.width) ) {
+								
+								ballXDir = -ballXDir;
+							} else {
+								ballYDir = -ballYDir;
+							}
+						}
+					}
+				}
 			}
 				
 			ballPosX += ballXDir;
