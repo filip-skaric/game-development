@@ -1,6 +1,7 @@
 package com.fico.BrickBreaker;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -8,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
+
 import javax.swing.Timer;
 
 import javax.swing.JPanel;
@@ -16,6 +19,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 
 	private boolean play = false;
 	private  int score = 0;
+	Random random = new Random();
 	
 	private int totalBrick = 21;
 	
@@ -23,10 +27,12 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 	private int delay = 8;
 	
 	private int playerX = 310;
-	private int ballPosX = 120;
-	private int ballPosY = 350;
+	private int ballPosX = random.nextInt(600);
+	private int ballPosY = 100 + random.nextInt(500);
 	private int ballXDir = -2;
 	private int ballYDir = -4;
+	private int ballCounter = 0;
+	private int ballTimer = 600;
 	
 	private MapGenerator map;
 	
@@ -71,6 +77,59 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 		//down is ball properties
 		g.setColor(Color.green);
 		g.fillOval(ballPosX, ballPosY, 20, 20); //20 is size of the ball
+		
+		//score
+		g.setColor(Color.black);
+		g.setFont(new Font("serif", Font.BOLD, 25));
+		g.drawString("" + score, 590, 30);
+		
+		//GAME WON
+		if (totalBrick <= 0) {
+			play = false;
+			ballXDir = 0;
+			ballYDir = 0;
+			
+			g.setColor(Color.green);
+			g.setFont(new Font("serif", Font.BOLD, 30));
+			g.drawString("You won - score: " + score, 190, 300);
+			
+			g.setFont(new Font("serif", Font.BOLD, 20));
+			g.drawString("Press enter to restart", 230, 350);
+		}
+		
+		//GAME OVER MESSAGE
+		if (ballPosY > 570) {
+			play = false;
+			ballXDir = 0;
+			ballYDir = 0;
+			
+			g.setColor(Color.red);
+			g.setFont(new Font("serif", Font.BOLD, 30));
+			g.drawString("Game over - score: " + score, 190, 300);
+			
+			g.setFont(new Font("serif", Font.BOLD, 20));
+			g.drawString("Press enter to restart!", 230, 350);
+		}
+		
+		if (play) {
+			if (ballCounter < ballTimer) {
+				ballCounter++;
+			} else {
+				ballCounter = 0;
+				if (ballXDir < 0) {
+					ballXDir--;
+				} else {
+					ballXDir++;
+				}
+				
+				if (ballYDir < 0) {
+					ballYDir--;
+				} else {
+					ballYDir++;
+				}
+				
+			}
+		}
 		
 		g.dispose(); //release resources
 	}
@@ -157,6 +216,19 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 			} else {
 				moveLeft();
 			}
+		} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			
+			if (!play) {
+				play = true;
+				ballPosX = random.nextInt(600); //Random(600); //120;
+				ballPosY = 100 + random.nextInt(500);
+				ballXDir = -1;
+				ballYDir = -2;
+				score = 0;
+				totalBrick = 21;
+				map = new MapGenerator(3, 7);
+				repaint();
+			}
 		}
 	}
 	
@@ -171,7 +243,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 	private void moveLeft() {
 
 		play = true;
-		playerX-= 20;
+		playerX -= 20;
 	}
 
 
@@ -180,6 +252,4 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
-
-	//samo da vidim da li ovo radi
 }
