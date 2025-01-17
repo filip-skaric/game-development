@@ -134,6 +134,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 		g.dispose(); //release resources
 	}
 	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -195,12 +196,14 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 		
 	}
 
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
